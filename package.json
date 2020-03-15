@@ -25,7 +25,9 @@
     },
     "dependencies": {
         "firebase": "^7.10.0",
+        "vue-image-upload-resize": "^2.3.0",
         "vue-progressbar": "^0.7.5",
-        "vue-router": "^3.1.6"
+        "vue-router": "^3.1.6",
+        "vue-upload-image": "^1.1.5"
     }
 }

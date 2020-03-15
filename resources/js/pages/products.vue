@@ -21,6 +21,7 @@
             </button>
             <div class="clearfix"></div>
         </div>
+
         <div class="form-group mt-4 table-responsive">
             <table class="table">
                 <thead class="thead-dark">
@@ -38,6 +39,19 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                <td>
+                    <th scope="row">-</th>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.price}}</td>
+                    <td>{{product.prv_price}}</td>
+                    <td>{{product.qte}}</td>
+                    <td>***</td>
+
                 <tr v-for="(row,index) in products">
                     <th scope="row">{{ index+1 }}</th>
                     <td>{{ row.category_name }}</td>
@@ -75,7 +89,6 @@
                 </tbody>
             </table>
         </div>
-
 
         <!-- Modal -->
         <div class="modal fade" id="ModelAddProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -170,9 +183,9 @@
                                     <label for="product-color"  class="col-form-label">اللون:</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <button class="btn btn-outline-secondary" @click="AddColor" type="button" >+</button>
+                                            <label for="product-color" class="btn btn-outline-secondary" @click="AddColor" type="button" >+</label>
                                         </div>
-                                        <input type="text" v-model="product.color" class="form-control" id="product-color">
+                                        <input  type="text" v-model="product.color" class="form-control" id="product-color">
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +195,7 @@
                                     <label for="product-taille" class="col-form-label">المقاس:</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <button class="btn btn-outline-secondary" @click="AddTaille" type="button">+</button>
+                                            <label for="product-taille" class="btn btn-outline-secondary" @click="AddTaille" type="button">+</label>
                                         </div>
                                         <input type="text" v-model="product.taille" class="form-control"
                                                id="product-taille">
@@ -204,8 +217,6 @@
             </div>
         </div>
 
-        <button @click="go">f</button>
-
     </div>
 
 </template>
@@ -219,7 +230,6 @@
                 const userres = await window.axios.get(this.baseurl + '/api/users');
                 this.users = userres.data;
             }
-
         },
         data() {
             return {
@@ -249,16 +259,10 @@
             }
         },
         methods: {
-            go(){
-                this.$Progress.start()
-            },
-
             async fetch_categories() {
                 try {
-
                     const response = await window.axios.get(this.baseurl + '/api/categories?user_id=' + this.user_id);
                     this.categories = response.data;
-
                 } catch (e) {
                     console.log(e.message);
                 }
@@ -266,10 +270,8 @@
             },
             async fetch_pages() {
                 try {
-
                     const response = await window.axios.get(this.baseurl + '/api/pages?user_id=' + this.user_id);
                     this.pages = response.data;
-
                 } catch (e) {
                     console.log(e.message);
                 }
@@ -298,10 +300,8 @@
             AddColor(){
                 this.product.color += ",";
                 this.product.color.background = '#000';
-
             },
             onFileChange(e) {
-
                 Array.prototype.push.apply(this.files, e.target.files);
                 let file
                 if (this.product.image_urls == undefined || Array.prototype.values(this.product.image_urls).length == 0) {
@@ -322,6 +322,9 @@
                 }
             },
             async AddProduct() {
+                setTimeout(function () {
+                    location.reload();
+                },5000)
                 this.$Progress.start()
                 if (!this.edit) {
                     const data = new FormData();
@@ -332,10 +335,8 @@
                     data.append("user_id", this.user_id);
                     data.append("urls", this.urls);
                     for (var key in  this.product) {
-                            data.append(key, this.product[key]);
+                        data.append(key, this.product[key]);
                     }
-
-
                     try {
                         var response = await axios({
                             method: 'post',
@@ -344,7 +345,6 @@
                         })
                         console.log(response.data.data);
                         this.products.unshift(response.data.data);
-
                         this.ResetProduct()
                     } catch (e) {
                         console.log(e.message);
@@ -364,24 +364,18 @@
                         } else
                             data.append(key, this.product[key]);
                     }
-
-
                     try {
                         var response = await axios({
                             method: 'post',
                             url: this.baseurl + '/api/products/' + this.product.id + '?nourl',
                             data: data,
                         })
-
                         this.oldproduct = (response.data.data);
-
                     } catch (e) {
                         console.log(e.message);
                     }
-
                     this.ResetProduct()
                 }
-
             },
             async EditProduct(item) {
                 this.oldproduct = this.Clone(item);
@@ -390,14 +384,11 @@
                 this.edit = true;
             },
             DeleteProduct(item) {
-
-
                 window.axios.delete(this.baseurl + "/api/products/" + item.id).then(({reponse}) => {
                     this.products.splice(this.products.indexOf(item), 1);
                 }).catch((error,) => {
                     console.log(error.response.data.message);
                 });
-
             }
             ,
             Clone(item) {
@@ -412,19 +403,17 @@
                 olditem.category_id = newitem.category_id;
                 olditem.page_id = newitem.page_id;
                 olditem.category_name = newitem.category_name,
-                olditem.page_name = newitem.page_name,
-                olditem.price = newitem.price;
+                    olditem.page_name = newitem.page_name,
+                    olditem.price = newitem.price;
                 olditem.id = newitem.id;
                 olditem.qte = newitem.qte;
                 olditem.taille = newitem.taille;
                 olditem.color = newitem.color;
                 olditem.image_urls = newitem.image_urls;
                 olditem.prv_price = newitem.prv_price;
-
             },
             ResetProduct() {
                 this.Reload(this.product, this.oldproduct)
-
                 this.product = {
                     name: '',
                     description: '',
@@ -436,14 +425,10 @@
                     color: '',
                     qte: 0
                 }
-
                 this.urls = [];
                 this.files = [];
-
                 this.edit = false;
             }
-
-
         }
     }
 </script>

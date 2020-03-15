@@ -19,6 +19,12 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import  App from  './components/Viewer.vue'
+import ImageUploader from 'vue-image-upload-resize'
+import UploadImage from 'vue-upload-image';
+Vue.component('upload-image', UploadImage);
+
+Vue.use(ImageUploader);
+
 
 import VueProgressBar from 'vue-progressbar'
 import router from './router'
@@ -28,7 +34,7 @@ Vue.use(VueProgressBar , {
     failedColor: 'red',
     height: '2px',
     transition: {
-        speed: '.5s',
+        speed: '3s',
         opacity: '0.2s',
         termination: 100
     },
@@ -46,5 +52,9 @@ Vue.prototype.baseurl = document.querySelector("meta[name='url']").getAttribute(
 
 new Vue({
     router,
+    components: {
+        ImageUploader,
+        UploadImage
+    },
     render:h=>h(App)
 }).$mount('#app');
