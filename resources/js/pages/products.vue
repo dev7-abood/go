@@ -322,9 +322,6 @@
                 }
             },
             async AddProduct() {
-                setTimeout(function () {
-                    location.reload();
-                },5000)
                 this.$Progress.start()
                 if (!this.edit) {
                     const data = new FormData();
