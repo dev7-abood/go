@@ -339,7 +339,7 @@
                             method: 'post',
                             url: this.baseurl + '/api/products?nourl',
                             data: data,
-                        })
+                        }).then(res => this.$Progress.finish())
                         console.log(response.data.data);
                         this.products.unshift(response.data.data);
                         this.ResetProduct()
