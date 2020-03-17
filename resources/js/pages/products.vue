@@ -339,7 +339,7 @@
                             method: 'post',
                             url: this.baseurl + '/api/products?nourl',
                             data: data,
-                        }).then(res => this.$Progress.finish())
+                        }).then()
                         console.log(response.data.data);
                         this.products.unshift(response.data.data);
                         this.ResetProduct()
@@ -366,7 +366,7 @@
                             method: 'post',
                             url: this.baseurl + '/api/products/' + this.product.id + '?nourl',
                             data: data,
-                        })
+                        }).then(res => this.$Progress.finish())
                         this.oldproduct = (response.data.data);
                     } catch (e) {
                         console.log(e.message);
